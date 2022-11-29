@@ -88,17 +88,17 @@ var upperCasedCharacters = [
   "Z",
 ];
 
-var charLength;
+var passLength;
 
 // Function to prompt user for password options
 function getPasswordOptions() {
-  charLength = prompt(
+  passLength = prompt(
     "Passwords can contain 10-64 characters only. How many would you like?"
   );
   {
-    if (charLength == null) {
+    if (passLength == null) {
       return null;
-    } else if (charLength < 10 || charLength > 64 || isNaN(charLength)) {
+    } else if (passLength < 10 || passLength > 64 || isNaN(passLength)) {
       alert(
         "Sorry, you entered an incorrect amount of characters. 10-64 characters are required. Please try again!"
       );
@@ -106,57 +106,58 @@ function getPasswordOptions() {
         return null;
       }
     }
-  }
 
-  var passOptions = {
-    upperCasedCharacters: confirm(
-      "Would you like to use uppercase characters?"
-    ),
-    lowerCasedCharacters: confirm(
-      "Would you like to use lowercase characters?"
-    ),
-    numericCharacters: confirm(
-      "Would you like to use numbers in your password?"
-    ),
-    specialCharacters: confirm(
-      "Would you like to use special characters (!, @, $)?"
-    ),
-  };
+    var passOptions = {
+      upperCasedCharacters: confirm(
+        "Would you like to use uppercase characters?"
+      ),
+      lowerCasedCharacters: confirm(
+        "Would you like to use lowercase characters?"
+      ),
+      numericCharacters: confirm("Would you like to use numbers?"),
 
-  passOptions = [];
-  if (upperCasedCharacters == true) {
-    passOptions = passOptions.concat(upperCasedCharacters);
-  }
+      specialCharacters: confirm(
+        "Would you like to use special characters (!, @, $)??"
+      ),
+    };
 
-  if (lowerCasedCharacters == true) {
-    passOptions = passOptions.concat(lowerCasedCharacters);
-  }
-
-  if (numericCharacters == true) {
-    passOptions = passOptions.concat(numericCharacters);
-  }
-
-  if (specialCharacters == true) {
-    passOptions = passOptions.concat(specialCharacters);
-  } else if (
-    upperCasedCharacters == false &&
-    lowerCasedCharacters == false &&
-    numericCharacters == false &&
-    specialCharacters == false
-  ) {
-    alert("Error! You have not entered any character types. Please try again");
-    {
-      getPasswordOptions();
+    passOptions = [];
+    if (options.upperCasedCharacters == true) {
+      passOptions = passOptions.concat(upperCasedCharacters);
     }
+
+    if (options.lowerCasedCharacters == true) {
+      passOptions = passOptions.concat(lowerCasedCharacters);
+    }
+
+    if (options.numericCharacters == true) {
+      passOptions = passOptions.concat(numericCharacters);
+    }
+
+    if (options.specialCharacters == true) {
+      passOptions = passOptions.concat(specialCharacters);
+    } else if (
+      options.upperCasedCharacters == false &&
+      options.lowerCasedCharacters == false &&
+      options.numericCharacters == false &&
+      options.specialCharacters == false
+    ) {
+      alert(
+        "Error! You have not entered any character types. Please try again"
+      );
+      {
+        getPasswordOptions();
+      }
+    }
+    return [
+      passOptions,
+      options.passLength,
+      options.upperCasedCharacters,
+      options.lowerCasedCharacters,
+      options.numericCharacters,
+      options.specialCharacters,
+    ];
   }
-  return [
-    passOptions,
-    charLength,
-    upperCasedCharacters,
-    lowerCasedCharacters,
-    specialCharacters,
-    numericCharacters,
-  ];
 }
 
 // Function to generate password with user input
@@ -164,19 +165,18 @@ function generatePassword() {
   getPasswordOptions();
 
   var finalPass = "";
-  while (finalPass.length < charLength) {
+  while (finalPass.length < passLength) {
     var index = Math.floor(Math.random() * passOptions.length);
     finalPass += passOptions[index];
   }
   return finalPass;
 }
+
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
-  getPasswordOptions();
-
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
